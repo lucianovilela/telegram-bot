@@ -22,13 +22,13 @@ bot.onText(/\/su (.+)/, (msg, match) => {
 
   const chatId = msg.chat.id;
   const resp = match[1]; 
-  const r = sugestao(resp)
+  
+  sugestao(resp).then(r =>{
     console.log(r);
     bot.sendMessage(chatId, JSON.stringify(r));
-  
-});
+  });
 
-
+})
 bot.onText(/\/si (.+)/, (msg, match) => {
 
   const chatId = msg.chat.id;

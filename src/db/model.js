@@ -13,7 +13,7 @@ const Log = sequelize.define("log", {
 }, {
     sequelize,
     modelName: 'log',
-    indexes: [{ unique: true, fields: ['consulta'] }]
+    indexes: [{  fields: ['consulta'] }]
 });
 
 module.exports = { Log };

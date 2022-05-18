@@ -1,5 +1,5 @@
 const moment = require('moment');
-const wiki = require('wikijs');
+const  wiki  = require('wikijs').default;
 
 const SIGNOS = () => {
     return [
@@ -176,9 +176,9 @@ const pesquisa = async (_nome) => {
 const sugestao = async (_nome) => {
     const nome = sanitize(_nome);
     const list = await wiki({ apiUrl: 'https://en.wikipedia.org/w/api.php' })
-        .search(`${nome}`, 30, true);
+        .search(`${nome}`, 10, true);
     return list.results;
 };
 
 
-module.export = { sugestao, pesquisa }
+module.exports = { sugestao, pesquisa }
