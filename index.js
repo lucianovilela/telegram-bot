@@ -7,6 +7,8 @@ const token = process.env.TELEGRAM_TOKEN;
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
 
+const { Chat } = require('./src/db/model');
+
 // Matches "/echo [whatever]"
 bot.onText(/\/echo (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
@@ -14,6 +16,7 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
   // of the message
 
   const chatId = msg.chat.id;
+  Chat.findOrCreate({where:{ idTelegram : chatId}});
   const resp = match[1]; // the captured "whatever"
 
   // send back the matched "whatever" to the chat
@@ -24,8 +27,8 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 // messages.
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
+  const [chat, created ] = Chat.findOrCreate({where:{ idTelegram : chatId}});
   console.log(msg);
-
   // send a message to the chat acknowledging receipt of their message
-  bot.sendMessage(chatId, `Received your message ${msg.chat.first_name}`);
+  bot.sendMessage(chatId, `Received your message ${msg.chat.first_name} chat ${chat.id}`);
 });
