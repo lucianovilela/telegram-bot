@@ -1,5 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 require("dotenv").config({ debug: true });
+const { pesquisa, sugestao } = require('./src/lib/signo');
 
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TELEGRAM_TOKEN;
@@ -7,9 +8,8 @@ const token = process.env.TELEGRAM_TOKEN;
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, { polling: true });
 
-const { Chat } = require('./src/db/model');
+const { Log } = require('./src/db/model');
 
-// Matches "/echo [whatever]"
 bot.onText(/\/echo (.+)/, (msg, match) => {
 
   const chatId = msg.chat.id;
@@ -18,19 +18,26 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
   bot.sendMessage(chatId, resp);
 });
 
-// Listen for any kind of message. There are different kinds of
-// messages.
-bot.on('message', async (msg) => {
+bot.onText(/\/su (.+)/, (msg, match) => {
+
   const chatId = msg.chat.id;
-  const [chat, created] = await Chat.findOrCreate({
-    where: {
-      idTelegram: chatId,
-      last_name: msg.chat.last_name, first_name: msg.chat.first_name
-    }
-  });
-  console.log(msg);
-  bot.sendMessage(chatId, `Received your message ${msg.chat.first_name} chat ${chat.id}`);
+  const resp = match[1]; 
+  const r = sugestao(resp)
+    console.log(r);
+    bot.sendMessage(chatId, JSON.stringify(r));
+  
 });
+
+
+bot.onText(/\/si (.+)/, (msg, match) => {
+
+  const chatId = msg.chat.id;
+
+  const resp = match[1]; // the captured "whatever"
+  Log.create({consulta:resp, idTelegram:chatId});
+  pesquisa(resp).then(r=>bot.sendMessage(chatId, JSON.stringify(r)))
+});
+
 
 bot.on('error', (err) => {
   console.log("error pego:", err);
