@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize(process.env.DB_CONNECTION);
+console.log("connection ", process.env.DB_CONNECTION)
+const sequelize = new Sequelize(process.env.DB_CONNECTION, { dialect:'postgres'});
 
 const User = sequelize.define("user", {
     id: {
@@ -48,6 +49,9 @@ const Chat = sequelize.define("chat", {
         primaryKey: true
     },
     idTelegram: { type: DataTypes.BIGINT },
+    first_name: DataTypes.TEXT,
+    last_name: DataTypes.TEXT,
+
     status: { type: DataTypes.CHAR, defaultValue: 'A' }
 }, {
     sequelize,
@@ -58,6 +62,6 @@ const Chat = sequelize.define("chat", {
 module.exports = { User, Especialidade, Agenda, Reserva, Chat };
 
 (async () => {
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ force: true });
     console.log("modelo atualizado");
 })();
