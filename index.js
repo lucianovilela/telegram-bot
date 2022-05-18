@@ -24,8 +24,12 @@ bot.onText(/\/su (.+)/, (msg, match) => {
   const resp = match[1]; 
   
   sugestao(resp).then(r =>{
-    console.log(r);
-    bot.sendMessage(chatId, JSON.stringify(r));
+    const resposta = r.map((current, value )=>( `/si ${value.title}`))
+    bot.sendMessage(chatId, "sugestao", {
+      "reply_markup": {
+          "keyboard": resposta
+          }
+      });
   });
 
 })
