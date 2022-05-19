@@ -9,7 +9,8 @@ const Log = sequelize.define("log", {
         primaryKey: true
     },
     consulta: DataTypes.TEXT,
-    idTelegram : DataTypes.BIGINT
+    idTelegram : DataTypes.BIGINT,
+    resposta:DataTypes.TEXT
 }, {
     sequelize,
     modelName: 'log',
