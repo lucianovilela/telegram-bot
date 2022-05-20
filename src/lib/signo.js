@@ -146,9 +146,9 @@ const consultaWiki = async (nome) => {
             let info = await page.info();
             let imagem = await page.mainImage();
             let url = page.url();
-
+            console.log(info);
             return {
-                info: { fullName: info.fullName, name: info.name, birthDate: info.birthDate, age: info.age },
+                info: { fullName: info.fullName , name: info.bithName  , birthDate: info.birthDate, age: info.age },
                 imagem,
                 url
             }

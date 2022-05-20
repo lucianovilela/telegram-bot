@@ -3,6 +3,7 @@ const moment = require("moment");
 require("dotenv").config({ debug: true });
 const { pesquisa, sugestao } = require('./src/lib/signo');
 const fs = require('fs');
+const express = require('express');
 
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TELEGRAM_TOKEN;
