@@ -4,7 +4,7 @@ require("dotenv").config({ debug: true });
 const { pesquisa, sugestao } = require('./src/lib/signo');
 const fs = require('fs');
 const express = require('express');
-
+const app = express();
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TELEGRAM_TOKEN;
 
@@ -74,3 +74,7 @@ bot.on("text", (msg) => {
 bot.on('error', (err) => {
   console.log("error pego:", err);
 })
+app.get("/", (req, res)=>{
+  res.send(JSON.stringify(new Date))
+})
+app.listen(process.env.PORT || 3000, ()=>console.log("processo iniciado"))
