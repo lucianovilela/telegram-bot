@@ -9,8 +9,9 @@ const app = express();
 const token = process.env.TELEGRAM_TOKEN;
 
 // Create a bot that uses 'polling' to fetch new updates
-const bot = new TelegramBot(token, { polling: true });
-
+app.listen(process.env.PORT || 3000, ()=>console.log("processo iniciado"))
+const bot = new TelegramBot(token, { webHook:{host:"0.0.0.0", port:'5000' }});
+bot.setWebHook(`https://5000-lucianovile-telegrambot-60w0vbynykh.ws-us45.gitpod.io/${token}`);
 const { Log } = require('./src/db/model');
 bot.onText(/\/start/, (msg) => {
 
@@ -75,6 +76,6 @@ bot.on('error', (err) => {
   console.log("error pego:", err);
 })
 app.get("/", (req, res)=>{
+  console.log(req);
   res.send(JSON.stringify(new Date))
 })
-app.listen(process.env.PORT || 3000, ()=>console.log("processo iniciado"))
